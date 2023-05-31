@@ -69,7 +69,7 @@ function animatePNGSequence() {
   if (animationCounter % frameRateDivider === 0) { // Only change the frame when the counter is a multiple of frameRateDivider
     frameIndex++;
     if (frameIndex > totalFrames) {
-      frameIndex = 40; // Reset frame index to start
+      return; // Stop animation
     }
     animationElement.src = imageArray[frameIndex - 40].src; // Use preloaded image
   }
@@ -78,6 +78,7 @@ function animatePNGSequence() {
 
   requestAnimationFrame(animatePNGSequence);
 }
+
 
 animatePNGSequence();
 };
