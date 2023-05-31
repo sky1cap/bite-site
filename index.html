@@ -51,7 +51,7 @@ window.onload = function() {
     }
   });
 
-  let frameIndex = 40;
+  let frameIndex = 41; // starts from 41 because the 40th frame is already loaded in HTML
 const totalFrames = 121; // replace this with the total number of frames in your animation
 const animationElement = document.getElementById("animation-tap");
 let animationCounter = 0; // Add a new counter variable
@@ -85,15 +85,13 @@ function animatePNGSequence() {
     if (frameIndex > totalFrames) {
       return; // Stop animation
     }
-    animationElement.src = imageArray[frameIndex - 40].src; // Use preloaded image
+    animationElement.src = imageArray[frameIndex - 41].src; // Use preloaded image
   }
 
   animationCounter++; // Increment the counter on every call
 
   requestAnimationFrame(animatePNGSequence);
 }
-
-
 }
 
 function setElementHeight() {
@@ -376,6 +374,10 @@ function addPlaceholder() {
 
           <div class="iphone-background-color"style="position: absolute; top: 5px; right: 10px; opacity: 1;  z-index: 0;"></div>
       
+          <div style="position: absolute; top: 251px; right: 25px; opacity: 1;  z-index: 1;">
+            <img id="animation-tap" src="./iphone-animated/animation-tap/0040.png" width="280" height="auto" />
+        </div>
+        
           <div style="position: absolute; top: 251px; right: 25px; opacity: 1;  z-index: 1;">
               <img id="animation-tap" width="280" height="auto" />
           </div>
