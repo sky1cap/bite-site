@@ -1,0 +1,14 @@
+{
+    "headers": [
+      {
+        "source": "/iphone-animated/animation-tap/(.*).png",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-store"
+          }
+        ]
+      }
+    ]
+  }
+  
