@@ -72,7 +72,7 @@ window.onload = function() {
       if (frameIndex > totalFrames) {
         return; // Reset frame index to start
       }
-      const imageSrc = `./iphone-animated/animation-tap/${String(frameIndex).padStart(4, '0')}.png`;
+      const imageSrc = `/iphone-animated/animation-tap/${String(frameIndex).padStart(4, '0')}.png`;
       console.log("Trying to load from: ", imageSrc);
       animationElement.src = imageSrc;
     }
