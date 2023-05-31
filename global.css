@@ -1,0 +1,28 @@
+body {
+  margin: 0;
+  line-height: normal;
+}
+
+:root {
+  /* fonts */
+  --font-montserrat: Montserrat;
+  --font-lexend: Lexend;
+  --font-lexend-deca: "Lexend Deca";
+
+  /* font sizes */
+  --font-size-mid-1: 17.1px;
+  --font-size-2xl: 21px;
+
+  /* Colors */
+  --color-white: #fff;
+
+  /* Gaps */
+  --gap-3xs: 10px;
+  --gap-4xs: 20px;
+
+  /* Paddings */
+  --padding-3xs: 10px;
+
+ 
+}
+
