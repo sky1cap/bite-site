@@ -54,16 +54,27 @@ window.onload = function() {
   let animationCounter = 0; // Add a new counter variable
   const frameRateDivider = 2; // Change this to control the speed of the animation
 
+  let imageArray = []; // array to hold the image paths
+  for (let i = frameIndex; i <= totalFrames; i++) {
+    const imagePath = `./iphone-animated/animation-tap/${String(i).padStart(4, '0')}.png`;
+    imageArray.push(imagePath);
+  }
+  
+  // preload the images
+  imageArray.forEach((imagePath) => {
+    const img = new Image();
+    img.src = imagePath;
+  });
+
   function animatePNGSequence() {
     if (animationCounter % frameRateDivider === 0) { // Only change the frame when the counter is a multiple of frameRateDivider
       frameIndex++;
       if (frameIndex > totalFrames) {
         return; // Reset frame index to start
       }
-      const imageSrc = `/iphone-animated/animation-tap/${String(frameIndex).padStart(4, '0')}.png`;
-console.log("Trying to load from: ", imageSrc);
-animationElement.src = imageSrc;
-
+      const imageSrc = `./iphone-animated/animation-tap/${String(frameIndex).padStart(4, '0')}.png`;
+      console.log("Trying to load from: ", imageSrc);
+      animationElement.src = imageSrc;
     }
 
     animationCounter++; // Increment the counter on every call
