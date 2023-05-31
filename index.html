@@ -57,13 +57,27 @@ const animationElement = document.getElementById("animation-tap");
 let animationCounter = 0; // Add a new counter variable
 const frameRateDivider = 2; // Change this to control the speed of the animation
 
-let imageArray = []; // Array to hold the image paths
+let imageArray = []; // array to hold the image objects
 for (let i = frameIndex; i <= totalFrames; i++) {
-  const imagePath = `./iphone-animated/animation-tap/${String(i).padStart(4, '0')}.png`;
-  let img = new Image();
-  img.src = imagePath;
+  const img = new Image();
+  img.src = `./iphone-animated/animation-tap/${String(i).padStart(4, '0')}.png`;
   imageArray.push(img);
 }
+
+// Create an array of promises for each image load
+let imageLoadPromises = imageArray.map(img => {
+  return new Promise((resolve, reject) => {
+    img.onload = resolve;
+    img.onerror = reject;
+  });
+});
+
+// Start the animation once all images are preloaded
+Promise.all(imageLoadPromises).then(() => {
+  animatePNGSequence();
+}).catch(error => {
+  console.error("Error preloading images", error);
+});
 
 function animatePNGSequence() {
   if (animationCounter % frameRateDivider === 0) { // Only change the frame when the counter is a multiple of frameRateDivider
@@ -79,9 +93,6 @@ function animatePNGSequence() {
   requestAnimationFrame(animatePNGSequence);
 }
 
-
-animatePNGSequence();
-};
 
 
 
