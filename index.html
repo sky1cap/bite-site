@@ -39,214 +39,214 @@
     <script src="https://cdn.jsdelivr.net/npm/@lottiefiles/lottie-player@latest"></script>
 
     <script>
-// Loading fonts using Web Font Loader
-window.onload = function() {
-  fadeInContainer(); // Call fadeInContainer after all elements (including images, scripts etc.) are loaded
-
-  $(".button-fetch").on("click", handleButtonClick);
-  $("#myInput, #myInput-1").on("keydown", function(event) {
-    if (event.key === "Enter") {
-      event.preventDefault(); // Prevent form submission
-      $(".button-fetch").click(); // Trigger button click event
-    }
-  });
-
-  let frameIndex = 41; // starts from 41 because the 40th frame is already loaded in HTML
-const totalFrames = 121; // replace this with the total number of frames in your animation
-const animationElement = document.getElementById("animation-tap");
-let animationCounter = 0; // Add a new counter variable
-const frameRateDivider = 2; // Change this to control the speed of the animation
-
-let imageArray = []; // array to hold the image objects
-for (let i = frameIndex; i <= totalFrames; i++) {
-  const img = new Image();
-  img.src = `./iphone-animated/animation-tap/${String(i).padStart(4, '0')}.png`;
-  imageArray.push(img);
-}
-
-// Create an array of promises for each image load
-let imageLoadPromises = imageArray.map(img => {
-  return new Promise((resolve, reject) => {
-    img.onload = resolve;
-    img.onerror = reject;
-  });
-});
-
-// Start the animation once all images are preloaded
-Promise.all(imageLoadPromises).then(() => {
-  animatePNGSequence();
-}).catch(error => {
-  console.error("Error preloading images", error);
-});
-
-function animatePNGSequence() {
-  if (animationCounter % frameRateDivider === 0) { // Only change the frame when the counter is a multiple of frameRateDivider
-    frameIndex++;
-    if (frameIndex > totalFrames) {
-      return; // Stop animation
-    }
-    animationElement.src = imageArray[frameIndex - 41].src; // Use preloaded image
-  }
-
-  animationCounter++; // Increment the counter on every call
-
-  requestAnimationFrame(animatePNGSequence);
-}
-}
-
-function setElementHeight() {
-  var vh = window.innerHeight * 0.01;
-  document.documentElement.style.setProperty('--vh', `${vh}px`);
-}
-
-setElementHeight();
-
-    
-    
-    function fadeInContainer() {
-      $(".bite-cover").css({ "opacity": 0 }).animate({ "opacity": 1 }, 2500);
-    }
-    
-    function handleButtonClick() {
-  var email;
-  var pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
-  
-  if($("#myInput").is(':visible')) {
-    email = $("#myInput").val();
-    if(email.match(pattern)) {
-      executeSuccessfulSubmission();
-    } else {
-      executeFailedSubmission("#myInput");
-    }
-  } else {
-    email = $("#myInput-1").val();
-    if(email.match(pattern)) {
-      executeSuccessfulSubmission();
-    } else {
-      executeFailedSubmission("#myInput-1");
-    }
-  }
-}
-
-function executeFailedSubmission(inputID) {
-  $(inputID).addClass("shake");
-  $(inputID).closest('.input-container').css({"border": "1.3px solid rgb(255, 0, 0)"});
-  setTimeout(function() {
-    $(inputID).removeClass("shake");
-    $(inputID).closest('.input-container').css({"border": "1.3px solid rgba(255, 255, 255, 0.4000000059604645)"});
-  }, 1000);
-}
-
-function executeSuccessfulSubmission() {
-  $(".bite-cover").css({
-    "opacity": 0,
-    "transform": "scale(1.05)",
-    "transition": "all .5s cubic-bezier(0.645, 0.045, 0.355, 1.000)"
-  });
-
-  setTimeout(function() {
-    $(".bite-cover").css("display", "none");
-  }, 500); // Delay of 1000 milliseconds (1 second)
-
-  
-
-  setTimeout(function() {
-    showOnboardingMessage();
-  }, 400);
-
-  setTimeout(function() {
-    loadLottieAnimation();
-  }, 600);
-
-  setTimeout(function() {
-    showCenteredText();
-  }, 800);
-
-  setTimeout(function() {
-    $(".onboard-button").css({'visibility': 'visible', 'opacity': '1', 'transform': 'scale(1.1)'});
-  }, 3000);
-
-  setTimeout(function() {
-    $(".welcome-container").animate({opacity: 1}, 600);
-  },800);
-
-  setTimeout(function() {
-  console.log('Loading Lottie animation on mobile');
-  const animationContainer = document.getElementById('lottie-animation-3');
-
-  lottie.loadAnimation({
-    container: animationContainer,
-    renderer: 'svg',
-    loop: false,
-    autoplay: true,
-    path: 'https://assets4.lottiefiles.com/packages/lf20_5y8HtRSAit.json'
-  });
-}, 380);
-
-
-  setTimeout(function() {
-    $(".sub-header").css('visibility', 'visible').css('opacity', '1');
-  }, 2500);
-
-  setTimeout(function() {
-    $(".mobile-onboard-button").css({'visibility': 'visible', 'opacity': '1', 'transform': 'scale(1)'});
-  }, 3500);
-
-  setTimeout(function() {
-    document.getElementById('circle-animation').classList.add('animate');
-    setTimeout(function() {
-      document.querySelector('.fade-overlay').style.opacity = "1";
-    }, 200); // Adjust this delay to control when the background image starts to become visible
-  }, 400);
-
-  // Add hover effect
-  $('.mobile-onboard-button').hover(
-    function() { $(this).css('transform', 'scale(.95)'); },
-    function() { $(this).css('transform', 'scale(1)'); }
-  );
-
-  $('.onboard-button').hover(
-    function() { $(this).css('transform', 'scale(1)'); },
-    function() { $(this).css('transform', 'scale(1.1)'); }
-  );
-}
-
-
-
-
-
-
-    
-    function showOnboardingMessage() {
-      $("#onboard-message").addClass("is-loaded");  
-      $(".welcome-container").addClass("is-loaded");  
-      $("#onboard-svg").addClass("animate-svg"); 
-      $(".center-image").addClass("is-loaded");
-      $(".back-button").addClass("is-loaded");
-    }
-    
-    function loadLottieAnimation() {
-    
-      lottie.loadAnimation({
-        container: document.getElementById('lottie-animation-2'), 
-        loop: false,
-        autoplay: true,
-        path: 'https://assets2.lottiefiles.com/packages/lf20_r6niqo75.json' 
-      });
-    
-     
-      $("#lottie-animation-2").css("display", "block");
-      $("#lottie-animation-2").addClass("is-loaded-lottie");
-    }
-    
-    function showCenteredText() {
-      $("#centered-text").addClass("is-loaded"); 
-    }
-
-  
-
-    
-        </script>
+      let animation2, animation3;
+      
+      window.onload = function() {
+        fadeInContainer();
+      
+        $(".button-fetch").on("click", handleButtonClick);
+        $("#myInput, #myInput-1").on("keydown", function(event) {
+          if (event.key === "Enter") {
+            event.preventDefault();
+            $(".button-fetch").click();
+          }
+        });
+      
+        let frameIndex = 41;
+        const totalFrames = 121;
+        const animationElement = document.getElementById("animation-tap");
+        let animationCounter = 0;
+        const frameRateDivider = 2;
+      
+        let imageArray = [];
+        for (let i = frameIndex; i <= totalFrames; i++) {
+          const img = new Image();
+          img.src = `./iphone-animated/animation-tap/${String(i).padStart(4, '0')}.png`;
+          imageArray.push(img);
+        }
+      
+        let imageLoadPromises = imageArray.map(img => {
+          return new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+          });
+        });
+      
+        Promise.all(imageLoadPromises).then(() => {
+          animatePNGSequence();
+        }).catch(error => {
+          console.error("Error preloading images", error);
+        });
+      
+        function animatePNGSequence() {
+          if (animationCounter % frameRateDivider === 0) {
+            frameIndex++;
+            if (frameIndex > totalFrames) {
+              return;
+            }
+            animationElement.src = imageArray[frameIndex - 41].src;
+          }
+      
+          animationCounter++;
+      
+          requestAnimationFrame(animatePNGSequence);
+        }
+      }
+      
+      function setElementHeight() {
+        var vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+      }
+      
+      setElementHeight();
+      
+      function fadeInContainer() {
+        $(".bite-cover").css({ "opacity": 0 }).animate({ "opacity": 1 }, 2500);
+        setTimeout(preloadLottieAnimations, 2500);
+      }
+      
+      function preloadLottieAnimations() {
+        animation2 = lottie.loadAnimation({
+          container: document.getElementById('lottie-animation-2'), 
+          renderer: 'svg',
+          loop: false,
+          autoplay: false,
+          path: 'https://assets2.lottiefiles.com/packages/lf20_r6niqo75.json' 
+        });
+      
+        animation3 = lottie.loadAnimation({
+          container: document.getElementById('lottie-animation-3'),
+          renderer: 'svg',
+          loop: false,
+          autoplay: false,
+          path: 'https://assets4.lottiefiles.com/packages/lf20_5y8HtRSAit.json'
+        });
+      }
+      
+      let enteredEmails = JSON.parse(localStorage.getItem("emails")) || [];
+      
+      function handleButtonClick() {
+        var email;
+        var pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      
+        if($("#myInput").is(':visible')) {
+          email = $("#myInput").val();
+          if(email.match(pattern)) {
+            checkEmail(email);
+          } else {
+            executeFailedSubmission("#myInput");
+          }
+        } else {
+          email = $("#myInput-1").val();
+          if(email.match(pattern)) {
+            checkEmail(email);
+          } else {
+            executeFailedSubmission("#myInput-1");
+          }
+        }
+      }
+      
+      function checkEmail(email) {
+        if (enteredEmails.includes(email)) {
+          executeAlreadyOnBoard();
+        } else {
+          enteredEmails.push(email);
+          localStorage.setItem("emails", JSON.stringify(enteredEmails));
+          executeSuccessfulSubmission();
+        }
+      }
+      
+      function executeFailedSubmission(inputID) {
+        $(inputID).addClass("shake");
+        $(inputID).closest('.input-container').css({"border": "1.3px solid rgb(255, 0, 0)"});
+        setTimeout(function() {
+          $(inputID).removeClass("shake");
+          $(inputID).closest('.input-container').css({"border": "1.3px solid rgba(255, 255, 255, 0.4000000059604645)"});
+        }, 1000);
+      }
+      
+      function executeSuccessfulSubmission() {
+        $(".bite-cover").css({
+          "opacity": 0,
+          "transform": "scale(1.05)",
+          "transition": "all .5s cubic-bezier(0.645, 0.045, 0.355, 1.000)"
+        });
+      
+        setTimeout(function() {
+          $(".bite-cover").css("display", "none");
+        }, 500);
+      
+        setTimeout(function() {
+          showOnboardingMessage();
+        }, 400);
+      
+        setTimeout(function() {
+          animation2.play();
+          $("#lottie-animation-2").css("display", "block");
+          $("#lottie-animation-2").addClass("is-loaded-lottie");
+        }, 600);
+      
+        setTimeout(function() {
+          showCenteredText();
+        }, 800);
+      
+        setTimeout(function() {
+          $(".onboard-button").css({'visibility': 'visible', 'opacity': '1', 'transform': 'scale(1.1)'});
+        }, 3000);
+      
+        setTimeout(function() {
+          $(".welcome-container").animate({opacity: 1}, 600);
+        },800);
+      
+        setTimeout(function() {
+          animation3.play();
+        }, 380);
+      
+        setTimeout(function() {
+          $(".sub-header").css('visibility', 'visible').css('opacity', '1');
+        }, 2500);
+      
+        setTimeout(function() {
+          $(".mobile-onboard-button").css({'visibility': 'visible', 'opacity': '1', 'transform': 'scale(1)'});
+        }, 3500);
+      
+        setTimeout(function() {
+          document.getElementById('circle-animation').classList.add('animate');
+          setTimeout(function() {
+            document.querySelector('.fade-overlay').style.opacity = "1";
+          }, 200);
+        }, 400);
+      
+        $('.mobile-onboard-button').hover(
+          function() { $(this).css('transform', 'scale(.95)'); },
+          function() { $(this).css('transform', 'scale(1)'); }
+        );
+      
+        $('.onboard-button').hover(
+          function() { $(this).css('transform', 'scale(1)'); },
+          function() { $(this).css('transform', 'scale(1.1)'); }
+        );
+      }
+      
+      function executeAlreadyOnBoard() {
+        $("#onboard-svg text").text("You're already on board.");
+        $(".mobile-onboard").html("You're already <br> <span style='color: hwb(166 7% 15%)'> on board</span>.");
+        executeSuccessfulSubmission();
+      }
+      
+      function showOnboardingMessage() {
+        $("#onboard-message").addClass("is-loaded");  
+        $(".welcome-container").addClass("is-loaded");  
+        $("#onboard-svg").addClass("animate-svg"); 
+        $(".center-image").addClass("is-loaded");
+        $(".back-button").addClass("is-loaded");
+      }
+      
+      function showCenteredText() {
+        $("#centered-text").addClass("is-loaded"); 
+      }
+      
+      </script>
 
     
     
