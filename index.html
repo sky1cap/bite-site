@@ -57,52 +57,52 @@ window.onload = function() {
   });
   
   let frameIndex = 41;
-  const totalFrames = 121;
-  let animationCounter = 0;
-  const frameRateDivider = 2;
-  
-  let imageArray = [];
-  for (let i = frameIndex; i <= totalFrames; i++) {
-    const img = new Image();
-    img.src = `./iphone-animated/animation-tap/${String(i).padStart(4, '0')}.png`;
-    imageArray.push(img);
-  }
-  
-  let imageLoadPromises = imageArray.map(img => {
-    return new Promise((resolve, reject) => {
-      img.onload = resolve;
-      img.onerror = reject;
-      if (img.complete) resolve(); // This will handle the Chrome issue
-    });
+const totalFrames = 121;
+let animationCounter = 0;
+const frameRateDivider = 2;
+
+let imageArray = [];
+for (let i = frameIndex; i <= totalFrames; i++) {
+  const img = new Image();
+  img.src = `./iphone-animated/animation-tap/${String(i).padStart(4, '0')}.png`;
+  imageArray.push(img);
+}
+
+let imageLoadPromises = imageArray.map(img => {
+  return new Promise((resolve, reject) => {
+    img.onload = function() {
+      resolve([this.naturalWidth, this.naturalHeight]);
+    };
+    img.onerror = reject;
+    if (img.complete) resolve([img.naturalWidth, img.naturalHeight]); // This will handle the Chrome issue
   });
-  
-  Promise.all(imageLoadPromises).then(() => {
-  // Hide the placeholder and show the canvas when the images have loaded
-  document.getElementById('placeholder-tap').style.display = 'none';
-  canvas.style.display = 'block';
-  
+});
+
+Promise.all(imageLoadPromises).then(dimensionsArray => {
+  const maxWidth = Math.max(...dimensionsArray.map(dimensions => dimensions[0]));
+  const maxHeight = Math.max(...dimensionsArray.map(dimensions => dimensions[1]));
+
+  canvas.width = maxWidth;
+  canvas.height = maxHeight;
+
   animatePNGSequence();
 }).catch(error => {
   console.error("Error preloading images", error);
 });
 
-  
-  function animatePNGSequence() {
-    if (animationCounter % frameRateDivider === 0) {
-      frameIndex++;
-      if (frameIndex > totalFrames) {
-        return;
-      }
-      // Instead of setting the src of an image element, draw the image onto the canvas
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(imageArray[frameIndex - 41], 0, 0, canvas.width, canvas.height);
-
+function animatePNGSequence() {
+  if (animationCounter % frameRateDivider === 0) {
+    frameIndex++;
+    if (frameIndex > totalFrames) {
+      return;
     }
-  
-    animationCounter++;
-  
-    requestAnimationFrame(animatePNGSequence);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(imageArray[frameIndex - 41], 0, 0, canvas.width, canvas.height);
   }
+
+  animationCounter++;
+  requestAnimationFrame(animatePNGSequence);
+}
 }
 
 
