@@ -99,7 +99,9 @@ function animatePNGSequence() {
   ctx.drawImage(imageArray[frameIndex - 41], 0, 0, canvas.width, canvas.height);
 
   animationCounter++;
-  requestAnimationFrame(animatePNGSequence);
+  requestAnimationFrame(animatePNGSequence); // this line should be inside the function
+}
+
 }
 
 
