@@ -77,10 +77,15 @@ window.onload = function() {
   });
   
   Promise.all(imageLoadPromises).then(() => {
-    animatePNGSequence();
-  }).catch(error => {
-    console.error("Error preloading images", error);
-  });
+  // Hide the placeholder and show the canvas when the images have loaded
+  document.getElementById('placeholder-tap').style.display = 'none';
+  canvas.style.display = 'block';
+  
+  animatePNGSequence();
+}).catch(error => {
+  console.error("Error preloading images", error);
+});
+
   
   function animatePNGSequence() {
     if (animationCounter % frameRateDivider === 0) {
@@ -378,26 +383,21 @@ function addPlaceholder() {
         <div class="right-container">
          
 
-        <div class="animation-responsive">
-
-          <div class="iphone-background-color"style="position: absolute; top: 5px; right: 10px; opacity: 1;  z-index: 0;"></div>
-      
-          <div style="position: absolute; top: 251px; right: 25px; opacity: 1;  z-index: 1;">
-            <img id="animation-tap" src="./iphone-animated/animation-tap/0040.png" width="280" height="auto" />
-        </div>
-        
-          <div style="position: absolute; top: 251px; right: 25px; opacity: 1;  z-index: 1;">
-              <img id="animation-tap" width="280" height="auto" />
+          <div class="animation-responsive">
+            <div class="iphone-background-color"style="position: absolute; top: 5px; right: 10px; opacity: 1;  z-index: 0;"></div>
+            
+            <div style="position: absolute; top: 251px; right: 25px; opacity: 1;  z-index: 1;">
+              <img id="placeholder-tap" src="./iphone-animated/animation-tap/0040.png" width="280" height="auto" />
+              <canvas id="animation-tap" style="display: none;" width="280" height="560"></canvas>
+            </div>
+            
+            <div style="position: absolute; top: 0; right: 0; z-index: 2;">
+                <img src="./iphone-animated/iphone-no-screen.png" alt="Iphone" width="330" height="auto">
+                <div style="position: absolute; top: 30px; right: 50px;">
+                  <lottie-player src="https://lottie.host/269b9633-be03-4956-9933-d7c5d08aa57c/56hqCLgxQN.json" background="transparent" speed="1" style="width: 230px; height: auto;" loop autoplay></lottie-player>
+                </div>
+            </div> 
           </div>
-      
-          <div style="position: absolute; top: 0; right: 0; z-index: 2;">
-              <img src="./iphone-animated/iphone-no-screen.png" alt="Iphone" width="330" height="auto">
-              <div style="position: absolute; top: 30px; right: 50px;">
-                <lottie-player src="https://lottie.host/269b9633-be03-4956-9933-d7c5d08aa57c/56hqCLgxQN.json" background="transparent" speed="1" style="width: 230px; height: auto;" loop autoplay></lottie-player>
-              </div>
-          </div> 
-      
-      </div>
        
         
 
