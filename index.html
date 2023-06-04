@@ -95,7 +95,8 @@ window.onload = function() {
       }
       // Instead of setting the src of an image element, draw the image onto the canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(imageArray[frameIndex - 41], 0, 0);
+      ctx.drawImage(imageArray[frameIndex - 41], 0, 0, canvas.width, canvas.height);
+
     }
   
     animationCounter++;
