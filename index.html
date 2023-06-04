@@ -39,93 +39,113 @@
     <script src="https://cdn.jsdelivr.net/npm/@lottiefiles/lottie-player@latest"></script>
 
     <script>
-let animation2, animation3;
-
-window.onload = function() {
-  fadeInContainer();
-  $(".button-fetch").on("click", handleButtonClick);
-  $("#myInput, #myInput-1").on("keydown", (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      $(".button-fetch").click();
-    }
-  });
-
-  let frameIndex = 41, totalFrames = 121, animationCounter = 0, frameRateDivider = 2;
-  let imageArray = [], imageLoadPromises = [];
-
-  for (let i = frameIndex; i <= totalFrames; i++) {
-    const imageUrl = `./iphone-animated/animation-tap/${String(i).padStart(4, '0')}.png`;
-    imageLoadPromises.push(fetch(imageUrl)
-      .then(response => response.blob())
-      .then(blob => {
-        const img = new Image();
-        img.src = URL.createObjectURL(blob);
-        imageArray.push(img);
-      }));
-  }
-
-  Promise.all(imageLoadPromises).then(() => animatePNGSequence()).catch(error => console.error("Error preloading images", error));
-
-  function animatePNGSequence() {
-    if (animationCounter++ % frameRateDivider === 0 && frameIndex <= totalFrames) {
-      document.getElementById("animation-tap").src = imageArray[frameIndex++ - 41].src;
-    }
-    requestAnimationFrame(animatePNGSequence);
-  }
-
-  function setElementHeight() {
-    let vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
-  }
-  
-  setElementHeight();
-  
-  function fadeInContainer() {
-    $(".bite-cover").css({ "opacity": 0 }).animate({ "opacity": 1 }, 2500);
-    setTimeout(preloadLottieAnimations, 2500);
-  }
-  
-  function preloadLottieAnimations() {
-    animation2 = lottie.loadAnimation({
-      container: document.getElementById('lottie-animation-2'), 
-      renderer: 'svg',
-      loop: false,
-      autoplay: false,
-      path: 'https://assets2.lottiefiles.com/packages/lf20_r6niqo75.json' 
-    });
-
-    animation3 = lottie.loadAnimation({
-      container: document.getElementById('lottie-animation-3'),
-      renderer: 'svg',
-      loop: false,
-      autoplay: false,
-      path: 'https://assets4.lottiefiles.com/packages/lf20_5y8HtRSAit.json'
-    });
-  }
-  
-  let enteredEmails = JSON.parse(localStorage.getItem("emails")) || [];
-  
-  function handleButtonClick() {
-    let email;
-    let pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
-    if($("#myInput").is(':visible')) {
-      email = $("#myInput").val();
-      if(email.match(pattern)) {
-        checkEmail(email);
-      } else {
-        executeFailedSubmission("#myInput");
+        let animation2, animation3;
+      
+      window.onload = function() {
+        fadeInContainer();
+      
+        $(".button-fetch").on("click", handleButtonClick);
+        $("#myInput, #myInput-1").on("keydown", function(event) {
+          if (event.key === "Enter") {
+            event.preventDefault();
+            $(".button-fetch").click();
+          }
+        });
+      
+        let frameIndex = 41;
+        const totalFrames = 121;
+        const animationElement = document.getElementById("animation-tap");
+        let animationCounter = 0;
+        const frameRateDivider = 2;
+      
+        let imageArray = [];
+        for (let i = frameIndex; i <= totalFrames; i++) {
+          const img = new Image();
+          img.src = `./iphone-animated/animation-tap/${String(i).padStart(4, '0')}.png`;
+          imageArray.push(img);
+        }
+      
+        let imageLoadPromises = imageArray.map(img => {
+          return new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+            if (img.complete) resolve(); // This will handle the Chrome issue
+          });
+        });
+      
+        Promise.all(imageLoadPromises).then(() => {
+          animatePNGSequence();
+        }).catch(error => {
+          console.error("Error preloading images", error);
+        });
+      
+        function animatePNGSequence() {
+          if (animationCounter % frameRateDivider === 0) {
+            frameIndex++;
+            if (frameIndex > totalFrames) {
+              return;
+            }
+            animationElement.src = imageArray[frameIndex - 41].src;
+          }
+      
+          animationCounter++;
+      
+          requestAnimationFrame(animatePNGSequence);
+        }
       }
-    } else {
-      email = $("#myInput-1").val();
-      if(email.match(pattern)) {
-        checkEmail(email);
-      } else {
-        executeFailedSubmission("#myInput-1");
+      
+      function setElementHeight() {
+        var vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
       }
-    }
-  }
-}
+      
+      setElementHeight();
+      
+      function fadeInContainer() {
+        $(".bite-cover").css({ "opacity": 0 }).animate({ "opacity": 1 }, 2500);
+        setTimeout(preloadLottieAnimations, 2500);
+      }
+      
+      function preloadLottieAnimations() {
+        animation2 = lottie.loadAnimation({
+          container: document.getElementById('lottie-animation-2'), 
+          renderer: 'svg',
+          loop: false,
+          autoplay: false,
+          path: 'https://assets2.lottiefiles.com/packages/lf20_r6niqo75.json' 
+        });
+      
+        animation3 = lottie.loadAnimation({
+          container: document.getElementById('lottie-animation-3'),
+          renderer: 'svg',
+          loop: false,
+          autoplay: false,
+          path: 'https://assets4.lottiefiles.com/packages/lf20_5y8HtRSAit.json'
+        });
+      }
+      
+      let enteredEmails = JSON.parse(localStorage.getItem("emails")) || [];
+      
+      function handleButtonClick() {
+        var email;
+        var pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      
+        if($("#myInput").is(':visible')) {
+          email = $("#myInput").val();
+          if(email.match(pattern)) {
+            checkEmail(email);
+          } else {
+            executeFailedSubmission("#myInput");
+          }
+        } else {
+          email = $("#myInput-1").val();
+          if(email.match(pattern)) {
+            checkEmail(email);
+          } else {
+            executeFailedSubmission("#myInput-1");
+          }
+        }
+      }
       
       function checkEmail(email) {
         if (enteredEmails.includes(email)) {
@@ -348,24 +368,29 @@ function addPlaceholder() {
             </div>
           </div>
         </div>
-
         <div class="right-container">
-          <div class="animation-responsive">
-              <div class="iphone-background-color"style="position: absolute; top: 5px; right: 10px; opacity: 1;  z-index: 0;"></div>
-              <div style="position: absolute; top: 251px; right: 25px; opacity: 1;  z-index: 1;">
-                  <img id="animation-tap-placeholder" src="./iphone-animated/animation-tap/0040.png" width="280" height="auto" />
-              </div>
-              <div style="position: absolute; top: 251px; right: 25px; opacity: 1;  z-index: 1;">
-                  <img id="animation-tap" width="280" height="auto" />
-              </div>
-              <div style="position: absolute; top: 0; right: 0; z-index: 2;">
-                  <img src="./iphone-animated/iphone-no-screen.png" alt="Iphone" width="330" height="auto">
-                  <div style="position: absolute; top: 30px; right: 50px;">
-                      <lottie-player src="https://lottie.host/269b9633-be03-4956-9933-d7c5d08aa57c/56hqCLgxQN.json" background="transparent" speed="1" style="width: 230px; height: auto;" loop autoplay></lottie-player>
-                  </div>
-              </div>
+         
+
+        <div class="animation-responsive">
+
+          <div class="iphone-background-color"style="position: absolute; top: 5px; right: 10px; opacity: 1;  z-index: 0;"></div>
+      
+          <div style="position: absolute; top: 251px; right: 25px; opacity: 1;  z-index: 1;">
+            <img id="animation-tap" src="./iphone-animated/animation-tap/0040.png" width="280" height="auto" />
+        </div>
+        
+          <div style="position: absolute; top: 251px; right: 25px; opacity: 1;  z-index: 1;">
+              <img id="animation-tap" width="280" height="auto" />
           </div>
       
+          <div style="position: absolute; top: 0; right: 0; z-index: 2;">
+              <img src="./iphone-animated/iphone-no-screen.png" alt="Iphone" width="330" height="auto">
+              <div style="position: absolute; top: 30px; right: 50px;">
+                <lottie-player src="https://lottie.host/269b9633-be03-4956-9933-d7c5d08aa57c/56hqCLgxQN.json" background="transparent" speed="1" style="width: 230px; height: auto;" loop autoplay></lottie-player>
+              </div>
+          </div> 
+      
+      </div>
        
         
 
