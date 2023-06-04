@@ -53,30 +53,32 @@
   let frameIndex = 41;
   const totalFrames = 121;
   const animationElement = document.getElementById("animation-tap");
-  const frameRateDivider = 2;
-
   let imageArray = [];
+  let imageLoadPromises = [];
+
   for (let i = frameIndex; i <= totalFrames; i++) {
-    const img = new Image();
-    img.src = `./iphone-animated/animation-tap/${String(i).padStart(4, '0')}.png`;
-    imageArray.push(img);
+    const imageUrl = `./iphone-animated/animation-tap/${String(i).padStart(4, '0')}.png`;
+    imageLoadPromises.push(
+      fetch(imageUrl)
+        .then(response => response.blob())
+        .then(blob => {
+          const imgSrc = URL.createObjectURL(blob);
+          imageArray.push(imgSrc);
+        })
+    );
   }
 
-  Promise.all(imageArray.map(img => new Promise((resolve, reject) => {
-    img.onload = resolve;
-    img.onerror = reject;
-    if (img.complete) resolve();
-  }))).then(() => {
+  Promise.all(imageLoadPromises).then(() => {
     animatePNGSequence();
   }).catch(error => {
     console.error("Error preloading images", error);
   });
 
   function animatePNGSequence() {
-    if(frameIndex > totalFrames) {
+    if (frameIndex > totalFrames) {
       return;
     }
-    animationElement.src = imageArray[frameIndex - 41].src;
+    animationElement.src = imageArray[frameIndex - 41];
     frameIndex++;
 
     const frameRate = 24; // Desired frame rate in frames per second
