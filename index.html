@@ -91,7 +91,6 @@ Promise.all(imageLoadPromises).then(dimensionsArray => {
 });
 
 function animatePNGSequence() {
-  if (animationCounter % frameRateDivider === 0) {
     frameIndex++;
     if (frameIndex > totalFrames) {
       return;
@@ -102,7 +101,6 @@ function animatePNGSequence() {
 
   animationCounter++;
   requestAnimationFrame(animatePNGSequence);
-}
 }
 
 
