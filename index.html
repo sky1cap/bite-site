@@ -39,9 +39,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@lottiefiles/lottie-player@latest"></script>
 
     <script>
-        let animation2, animation3;
-
-window.onload = function() {
+       window.onload = function() {
   fadeInContainer();
 
   $(".button-fetch").on("click", handleButtonClick);
@@ -55,43 +53,39 @@ window.onload = function() {
   let frameIndex = 41;
   const totalFrames = 121;
   const animationElement = document.getElementById("animation-tap");
-  let animationCounter = 0;
   const frameRateDivider = 2;
 
   let imageArray = [];
-  let imageLoadPromises = [];
   for (let i = frameIndex; i <= totalFrames; i++) {
-    const imageUrl = `./iphone-animated/animation-tap/${String(i).padStart(4, '0')}.png`;
-    imageLoadPromises.push(
-      fetch(imageUrl)
-        .then(response => response.blob())
-        .then(blob => {
-          const img = new Image();
-          img.src = URL.createObjectURL(blob);
-          imageArray.push(img);
-        })
-    );
+    const img = new Image();
+    img.src = `./iphone-animated/animation-tap/${String(i).padStart(4, '0')}.png`;
+    imageArray.push(img);
   }
 
-  Promise.all(imageLoadPromises).then(() => {
+  Promise.all(imageArray.map(img => new Promise((resolve, reject) => {
+    img.onload = resolve;
+    img.onerror = reject;
+    if (img.complete) resolve();
+  }))).then(() => {
     animatePNGSequence();
   }).catch(error => {
     console.error("Error preloading images", error);
   });
 
   function animatePNGSequence() {
-  frameIndex++;
-  if (frameIndex > totalFrames) {
-    return;
+    if(frameIndex > totalFrames) {
+      return;
+    }
+    animationElement.src = imageArray[frameIndex - 41].src;
+    frameIndex++;
+
+    const frameRate = 24; // Desired frame rate in frames per second
+    const frameDelay = 1000 / frameRate; // Delay in milliseconds between frames
+
+    setTimeout(animatePNGSequence, frameDelay);
   }
-  animationElement.src = imageArray[frameIndex - 41].src;
-
-  const frameRate = 24;  // Desired frame rate in frames per second
-  const frameDelay = 1000 / frameRate;  // Delay in milliseconds between frames
-
-  setTimeout(animatePNGSequence, frameDelay);
 }
-}
+
       
       function setElementHeight() {
         var vh = window.innerHeight * 0.01;
