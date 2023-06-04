@@ -39,20 +39,25 @@
     <script src="https://cdn.jsdelivr.net/npm/@lottiefiles/lottie-player@latest"></script>
 
     <script>
-  let animation2, animation3;
+let animation2, animation3;
 
-  window.onload = function() {
-    fadeInContainer();
+window.onload = function() {
+  fadeInContainer();
 
-    $(".button-fetch").on("click", handleButtonClick);
-    $("#myInput, #myInput-1").on("keydown", function(event) {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        $(".button-fetch").click();
-      }
-    });
+  $(".button-fetch").on("click", handleButtonClick);
+  $("#myInput, #myInput-1").on("keydown", function(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      $(".button-fetch").click();
+    }
+  });
 
-    let imageArray = [];
+  let frameIndex = 41;
+  const totalFrames = 121;
+  let animationCounter = 0;
+  const frameRateDivider = 2;
+
+  let imageArray = [];
   let imageLoadPromises = [];
   for (let i = frameIndex; i <= totalFrames; i++) {
     const imageUrl = `./iphone-animated/animation-tap/${String(i).padStart(4, '0')}.png`;
@@ -73,25 +78,20 @@
     console.error("Error preloading images", error);
   });
 
-    function animatePNGSequence(imageLoadPromises) {
-      // Wait until all images have been loaded
-      Promise.all(imageLoadPromises).then(() => {
-        if (animationCounter % frameRateDivider === 0) {
-          frameIndex++;
-          if (frameIndex > totalFrames) {
-            return;
-          }
-          animationElement.src = imageArray[frameIndex - 41].src;
-        }
-
-        animationCounter++;
-
-        requestAnimationFrame(() => animatePNGSequence(imageLoadPromises));
-      }).catch(error => {
-        console.error("Error running animation", error);
-      });
+  function animatePNGSequence() {
+    if (animationCounter % frameRateDivider === 0) {
+      frameIndex++;
+      if (frameIndex > totalFrames) {
+        return;
+      }
+      animationElement.src = imageArray[frameIndex - 41].src;
     }
+
+    animationCounter++;
+
+    requestAnimationFrame(animatePNGSequence);
   }
+}
       
       function setElementHeight() {
         var vh = window.innerHeight * 0.01;
