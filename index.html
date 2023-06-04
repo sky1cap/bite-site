@@ -80,18 +80,17 @@ window.onload = function() {
   });
 
   function animatePNGSequence() {
-    if (animationCounter % frameRateDivider === 0) {
-      frameIndex++;
-      if (frameIndex > totalFrames) {
-        return;
-      }
-      animationElement.src = imageArray[frameIndex - 41].src;
-    }
-
-    animationCounter++;
-
-    requestAnimationFrame(animatePNGSequence);
+  frameIndex++;
+  if (frameIndex > totalFrames) {
+    return;
   }
+  animationElement.src = imageArray[frameIndex - 41].src;
+
+  const frameRate = 24;  // Desired frame rate in frames per second
+  const frameDelay = 1000 / frameRate;  // Delay in milliseconds between frames
+
+  setTimeout(animatePNGSequence, frameDelay);
+}
 }
       
       function setElementHeight() {
