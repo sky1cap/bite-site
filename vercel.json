@@ -1,14 +1,13 @@
 {
-    "headers": [
-      {
-        "source": "/iphone-animated/animation-tap/(.*).png",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "no-store"
-          }
-        ]
-      }
-    ]
-  }
-  
+  "headers": [
+    {
+      "source": "/iphone-animated/animation-tap/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "max-age=31536000"
+        }
+      ]
+    }
+  ]
+}
